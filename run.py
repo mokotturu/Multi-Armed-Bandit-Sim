@@ -11,7 +11,7 @@ from policy import EpsilonGreedyPolicy, UCBPolicy, ModifiedUCBPolicy
 
 def main() -> None:
 	print(f'Simulations started at {ctime(time())}')
-	runUCB()
+	compareUCBs()
 
 # run epsilon greedy
 def runEPSG() -> None:
@@ -70,6 +70,28 @@ def runModifiedUCB() -> None:
 	plt.ylabel('Average Reward')
 	plt.legend()
 	plt.show()
+
+
+def compareUCBs() -> None:
+	numArms = 10
+	runs = 10000
+	T = 1000
+
+	
+	ucbSim = UCBPolicy(numArms, runs, T)
+	modifiedUcbSim = ModifiedUCBPolicy(numArms, runs, T)
+	ucbResult = playBasic(ucbSim, runs, T, numArms)
+	modifiedUcbResult = playBasic(modifiedUcbSim, runs, T, numArms)
+
+	print(f'UCB & Modified UCB simulations ended at {ctime(time())}')
+
+	plt.plot(ucbResult, label='UCB')
+	plt.plot(modifiedUcbResult, label='Modified UCB')
+	plt.xlabel('Steps')
+	plt.ylabel('Average Reward')
+	plt.legend()
+	plt.show()
+
 
 # simulations for epsilon greedy and UCB algorithms
 def playBasic(policy, runs: int, T: int, numArms: int):
